@@ -32,7 +32,7 @@ const modules = require('../src/modules')
 modules(app)
 
 app.listen(config.port, () => {
-  console.log(`Server started on ${config.port}`)
+  console.log(`Server started on port ${config.port}`)
 })
 
 export default app
