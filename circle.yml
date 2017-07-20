@@ -5,16 +5,18 @@
 # compile: compile your project
 # test: run your tests
 # deployment: deploy your code to your web servers
-
-version: 1.0
+version: 2
 jobs:
   build:
-    working_directory: ~/repo
+    working_directory: ~/mern-starter
     docker:
-      - image: circleci/node:7.10
+      - image: circleci/node:4.8.2
       - image: mongo:3.4.4
     steps:
       - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -30,11 +32,11 @@ jobs:
       - run:
           name: code-coverage
           command: './node_modules/.bin/nyc report --reporter=text-lcov'
-      # - store_artifacts:
-      #     path: test-results.xml
-      #     prefix: tests
-      # - store_artifacts:
-      #     path: coverage
-      #     prefix: coverage
-      # - store_test_results:
-      #     path: test-results.xml
+      - store_artifacts:
+          path: test-results.xml
+          prefix: tests
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
+      - store_test_results:
+          path: test-results.xml
